@@ -36,12 +36,11 @@ class CardapioAdmin(admin.ModelAdmin):
     search_fields = ['nome__tipo']
 
 class PedidoAdmin(admin.ModelAdmin):
-    """
-    Admin para o model Cardapio
-    """
-    list_display = ('dados_cliente', 'quantidade')
-    list_filter = ['dados_cliente']
-    search_fields = ['dados_cliente']
+
+     list_display = ['dados_cliente', 'quantidade']
+     search_fields = ['dados_cliente']
+
+
 
 admin.site.register(DadosCliente, DadosClienteAdmin)
 admin.site.register(Responsavel, ResponsavelAdmin)

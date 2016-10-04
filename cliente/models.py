@@ -76,12 +76,12 @@ class DadosCliente(models.Model):
         app_label='Dados Clientes'
 
 class Pedido(models.Model):
-    dados_cliente = models.ForeignKey(DadosCliente, verbose_name="Dados Cliente")
+    dados_cliente = models.ForeignKey("DadosCliente", verbose_name="Dados Cliente")
     quantidade = models.IntegerField(blank=True, null=False, verbose_name='Quanto')
 
     def __str__(self):
         return ''.join([
-            self.dados_cliente.nome,
+            self.dados_cliente.id,
             self.quantidade,
         ])
 
