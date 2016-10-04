@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
+from sabor import settings
+from datetime import datetime, timedelta
 
 # Create your models here.
 
@@ -26,7 +28,7 @@ class TipoRefeicao(models.Model):
         app_label='Tipos de Refeição'
 
      def __str__(self):
-        return ' '.join(self.numero)
+        return self.numero
     
     
 
@@ -39,11 +41,7 @@ class Cardapio(models.Model):
         app_label='Responsáveis'
 
     def __str__(self):
-        return ' '.join([
-            self.nome,
-            self.descricao,
-            self.tipo.numero
-        ])
+        return self.nome
 
     class meta:
         app_label='Cardápio'
@@ -59,31 +57,17 @@ class DadosCliente(models.Model):
     situacao = models.BooleanField(default=False, null=False, verbose_name='Situação')
 
     responsavel = models.ForeignKey(Responsavel, verbose_name="Responsável")
-    tipo = models.ForeignKey(TipoRefeicao, null=True, verbose_name="Tipo Refeição")
     
 
     def __str__(self):
-        return ''.join([
-            self.nome_fantasia,
-            self.razao_social,
-            self.cnpj,
-            self.telefone1_empresa,
-            self.telefone2_empresa,
-            self.responsavel.nome,
-        ])
-
-    class meta:
-        app_label='Dados Clientes'
+        return self.nome_fantasia
 
 class Pedido(models.Model):
-    dados_cliente = models.ForeignKey("DadosCliente", verbose_name="Dados Cliente")
-    quantidade = models.IntegerField(blank=True, null=False, verbose_name='Quanto')
+    empresa = models.ForeignKey(DadosCliente, null=True, verbose_name="Empresa")
+    tipo_refeicao = models.ForeignKey(TipoRefeicao, null=True, verbose_name="Tipo Refeição")
+    data_pedido = models.DateTimeField(default=datetime.now() ,verbose_name="Data Pedido")
+    quantidade_refeicoes = models.IntegerField(blank=True, null=False, verbose_name='Qtd. Refeições')
+    status = models.IntegerField(blank=True, null=True, default=1, verbose_name='Status do Pedido')
 
     def __str__(self):
-        return ''.join([
-            self.dados_cliente.id,
-            self.quantidade,
-        ])
-
-    class meta:
-        app_label='Pedido'
+        return self.empresa.nome_fantasia
